@@ -20,7 +20,7 @@ export default function HomePage() {
   }, [query, selectedCategory])
 
   return (
-    <div className="min-h-screen text-white" style={{ background: 'transparent' }}>
+    <div className="min-h-screen" style={{ background: 'transparent', color: 'var(--text-primary)' }}>
       <Navbar query={query} onQueryChange={setQuery} />
 
       <main className="max-w-[1400px] mx-auto px-6 py-8">
@@ -35,10 +35,10 @@ export default function HomePage() {
           <div className="flex-1 min-w-0">
             <div className="flex justify-between items-center mb-5">
               <div>
-                <h2 className="text-2xl font-bold text-white" style={{ fontFamily: "'Rajdhani', sans-serif", letterSpacing: '0.04em' }}>
+                <h2 className="text-2xl font-bold" style={{ fontFamily: "'Rajdhani', sans-serif", letterSpacing: '0.04em', color: 'var(--text-primary)' }}>
                   {selectedCategory}
                 </h2>
-                <p className="text-xs text-white/35 mt-0.5">{filteredGames.length} games available</p>
+                <p className="text-xs mt-0.5" style={{ color: 'var(--text-faint)' }}>{filteredGames.length} games available</p>
               </div>
             </div>
 

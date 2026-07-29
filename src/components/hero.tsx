@@ -5,8 +5,8 @@ import { Play, Plus, Star, Zap } from 'lucide-react'
 export function Hero() {
     return (
         <section className="relative h-[320px] md:h-[480px] rounded-2xl overflow-hidden mb-6 md:mb-10" style={{
-            border: '1px solid rgba(225, 29, 72, 0.3)',
-            boxShadow: '0 0 60px rgba(225, 29, 72, 0.15), 0 0 0 1px rgba(225, 29, 72, 0.15)',
+            border: '1px solid var(--surface-modal-border)',
+            boxShadow: '0 0 60px rgba(225, 29, 72, calc(0.15 * var(--glow-opacity))), 0 0 0 1px rgba(225, 29, 72, 0.15)',
         }}>
             {/* Background image */}
             <img
@@ -17,10 +17,10 @@ export function Hero() {
 
             {/* Gradient overlays */}
             <div className="absolute inset-0" style={{
-                background: 'linear-gradient(to right, #050508 0%, rgba(5,5,8,0.85) 45%, rgba(5,5,8,0.3) 75%, transparent 100%)',
+                background: `linear-gradient(to right, var(--hero-gradient-start) 0%, var(--hero-gradient-mid) 45%, var(--hero-gradient-light) 75%, transparent 100%)`,
             }} />
             <div className="absolute inset-0" style={{
-                background: 'linear-gradient(to top, rgba(5,5,8,0.7) 0%, transparent 50%)',
+                background: `linear-gradient(to top, var(--hero-bottom) 0%, transparent 50%)`,
             }} />
 
             {/* Red top-left corner accent */}
@@ -46,28 +46,29 @@ export function Hero() {
                 </div>
 
                 {/* Title */}
-                <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-2 md:mb-3 leading-tight" style={{
+                <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2 md:mb-3 leading-tight" style={{
                     fontFamily: "'Rajdhani', sans-serif",
                     letterSpacing: '0.03em',
                     textShadow: '0 0 40px rgba(225, 29, 72, 0.3)',
+                    color: 'var(--text-primary)',
                 }}>
                     Aeon Protocol
                 </h1>
 
                 {/* Description */}
-                <p className="text-white/65 text-xs sm:text-sm mb-4 leading-relaxed max-w-xs md:max-w-sm line-clamp-2 md:line-clamp-none">
+                <p className="text-xs sm:text-sm mb-4 leading-relaxed max-w-xs md:max-w-sm line-clamp-2 md:line-clamp-none" style={{ color: 'var(--text-muted)' }}>
                     Dive into a neon-soaked open world where every choice reshapes the battlefield. Real-time 3D combat, stunning visuals, and endless replayability.
                 </p>
 
                 {/* Meta */}
-                <div className="flex flex-wrap items-center gap-2 md:gap-3 mb-5 md:mb-6 text-xs md:text-sm text-white/50">
+                <div className="flex flex-wrap items-center gap-2 md:gap-3 mb-5 md:mb-6 text-xs md:text-sm" style={{ color: 'var(--text-muted)' }}>
                     <span className="flex items-center gap-1 text-yellow-400 font-semibold">
                         <Star className="w-3.5 h-3.5 fill-yellow-400" />
                         4.9
                     </span>
-                    <span className="text-white/30 hidden sm:inline">•</span>
+                    <span className="hidden sm:inline" style={{ color: 'var(--text-faintest)' }}>•</span>
                     <span>Adventure · Sci-Fi</span>
-                    <span className="text-white/30 hidden sm:inline">•</span>
+                    <span className="hidden sm:inline" style={{ color: 'var(--text-faintest)' }}>•</span>
                     <span>12.6M Players</span>
                 </div>
 
@@ -82,7 +83,11 @@ export function Hero() {
                     >
                         <Play className="w-3.5 h-3.5 md:w-4 md:h-4 fill-current" /> Play Now
                     </button>
-                    <button className="flex items-center gap-2 rounded-lg border border-white/15 bg-white/8 px-4 md:px-5 py-2 md:py-2.5 text-xs md:text-sm font-semibold text-white backdrop-blur-sm transition-all hover:bg-white/12">
+                    <button className="flex items-center gap-2 rounded-lg px-4 md:px-5 py-2 md:py-2.5 text-xs md:text-sm font-semibold backdrop-blur-sm transition-all" style={{
+                        border: '1px solid var(--surface-card-border)',
+                        background: 'var(--surface-hover)',
+                        color: 'var(--text-primary)',
+                    }}>
                         <Plus className="w-3.5 h-3.5 md:w-4 md:h-4" /> Add to Library
                     </button>
                 </div>

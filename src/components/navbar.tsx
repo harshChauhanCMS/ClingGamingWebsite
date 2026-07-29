@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import { signIn } from 'next-auth/react'
 import {
     Bell,
     Check,
@@ -11,13 +12,16 @@ import {
     Lock,
     LogOut,
     Mail,
+    Moon,
     Search,
     Settings,
+    Sun,
     User,
     X,
 } from 'lucide-react'
 import { categories } from '@/lib/games'
 import { useAuth, type AuthUser } from '@/lib/auth-context'
+import { useTheme } from '@/lib/theme-context'
 
 type NavbarProps = {
     query: string
@@ -90,6 +94,7 @@ export function Navbar({
     onSelectCategory,
 }: NavbarProps) {
     const { user, logout, loginModalOpen, openLoginModal, closeLoginModal, login } = useAuth()
+    const { theme, toggleTheme } = useTheme()
 
     const [browseOpen, setBrowseOpen] = useState(false)
     const [notifOpen, setNotifOpen] = useState(false)
@@ -148,16 +153,17 @@ export function Navbar({
     }
 
     const initials = user ? getInitials(user.username) : ''
+    const isLight = theme === 'light'
 
     return (
         <>
-            <header className="sticky top-0 z-50 backdrop-blur-xl" style={{ borderBottom: '1px solid rgba(225,29,72,0.25)', background: 'rgba(5,5,8,0.85)' }}>
+            <header className="sticky top-0 z-50 backdrop-blur-xl" style={{ borderBottom: isLight ? '1px solid rgba(0,0,0,0.08)' : '1px solid var(--border)', background: 'var(--navbar-bg)', boxShadow: isLight ? '0 2px 12px rgba(0,0,0,0.06)' : 'none', transition: 'all 0.3s ease' }}>
                 <div className="mx-auto flex h-16 max-w-[1600px] items-center gap-2 px-4 md:gap-4 md:px-6">
                     <a href="/" className="flex items-center gap-2">
                         <span className="flex size-9 items-center justify-center rounded-lg text-white" style={{ background: 'linear-gradient(135deg, #e11d48, #9f1239)', boxShadow: '0 0 20px rgba(225,29,72,0.5)' }}>
                             <Gamepad2 className="size-5" />
                         </span>
-                        <span className="hidden font-display text-xl font-bold tracking-widest text-white glow-text sm:inline">
+                        <span className="hidden font-display text-xl font-bold tracking-widest glow-text sm:inline" style={{ color: 'var(--text-primary)' }}>
                             NOVA
                         </span>
                     </a>
@@ -165,7 +171,8 @@ export function Navbar({
                     <nav className="ml-2 hidden items-center gap-1 lg:flex">
                         <a
                             href="/"
-                            className="rounded-md px-3 py-2 text-sm font-medium text-primary transition-colors hover:text-primary"
+                            className="rounded-md px-3 py-2 text-sm font-medium transition-colors hover:text-primary"
+                            style={{ color: 'var(--primary)' }}
                         >
                             Home
                         </a>
@@ -176,7 +183,8 @@ export function Navbar({
                                 onClick={() => setBrowseOpen((v) => !v)}
                                 aria-haspopup="menu"
                                 aria-expanded={browseOpen}
-                                className={`flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:text-red-400 ${browseOpen ? 'text-red-400' : 'text-white/50'}`}
+                                className={`flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:text-red-400`}
+                                style={{ color: browseOpen ? '#f87171' : 'var(--text-muted)' }}
                             >
                                 Browse
                                 <ChevronDown className={`size-4 transition-transform ${browseOpen ? 'rotate-180' : ''}`} />
@@ -185,9 +193,9 @@ export function Navbar({
                             {browseOpen && (
                                 <div
                                     role="menu"
-                                    className="absolute left-0 top-full mt-2 w-56 origin-top-left animate-in fade-in-0 zoom-in-95 rounded-xl p-2 shadow-xl backdrop-blur-xl" style={{ border: '1px solid rgba(225,29,72,0.3)', background: 'rgba(10,5,8,0.97)', boxShadow: '0 0 30px rgba(225,29,72,0.15)' }}
+                                    className="absolute left-0 top-full mt-2 w-56 origin-top-left animate-in fade-in-0 zoom-in-95 rounded-xl p-2 shadow-xl backdrop-blur-xl" style={{ border: '1px solid var(--surface-modal-border)', background: 'var(--surface-dropdown)', boxShadow: '0 0 30px rgba(225,29,72,0.15)' }}
                                 >
-                                    <p className="px-2 pb-2 pt-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                                    <p className="px-2 pb-2 pt-1 text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--text-faintest)' }}>
                                         Categories
                                     </p>
                                     <div className="grid grid-cols-1 gap-0.5">
@@ -197,7 +205,8 @@ export function Navbar({
                                                 type="button"
                                                 role="menuitem"
                                                 onClick={() => handleBrowseSelect(cat.name)}
-                                                className="flex items-center gap-2 rounded-lg px-3 py-2 text-left text-sm text-white/80 transition-colors hover:text-red-400" style={{}}
+                                                className="flex items-center gap-2 rounded-lg px-3 py-2 text-left text-sm transition-colors hover:text-red-400"
+                                                style={{ color: 'var(--text-secondary)' }}
                                             >
                                                 {cat.name}
                                             </button>
@@ -211,7 +220,8 @@ export function Navbar({
                             <a
                                 key={link}
                                 href="#"
-                                className="rounded-md px-3 py-2 text-sm font-medium text-white/50 transition-colors hover:text-red-400"
+                                className="rounded-md px-3 py-2 text-sm font-medium transition-colors hover:text-red-400"
+                                style={{ color: 'var(--text-muted)' }}
                             >
                                 {link}
                             </a>
@@ -227,7 +237,8 @@ export function Navbar({
                             type="button"
                             onClick={handleExpandSearch}
                             aria-label="Expand search"
-                            className="pointer-events-auto absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+                            className="pointer-events-auto absolute left-3 top-1/2 -translate-y-1/2"
+                            style={{ color: 'var(--text-muted)' }}
                             tabIndex={searchExpanded ? -1 : 0}
                         >
                             <Search className="size-4" />
@@ -240,15 +251,16 @@ export function Navbar({
                             onFocus={() => setSearchExpanded(true)}
                             placeholder="Search games..."
                             aria-label="Search games"
-                            className={`h-10 w-full rounded-full border pl-10 pr-4 text-sm text-white placeholder:text-white/35 focus:outline-none ${searchExpanded ? 'cursor-text' : 'cursor-pointer'}`}
-                            style={searchExpanded ? { borderColor: 'rgba(225,29,72,0.7)', background: 'rgba(225,29,72,0.08)', boxShadow: '0 0 16px rgba(225,29,72,0.2)' } : { borderColor: 'rgba(225,29,72,0.2)', background: 'rgba(10,5,7,0.6)' }}
+                            className={`h-10 w-full rounded-full border pl-10 pr-4 text-sm focus:outline-none ${searchExpanded ? 'cursor-text' : 'cursor-pointer'}`}
+                            style={searchExpanded ? { borderColor: 'rgba(225,29,72,0.7)', background: 'var(--surface-input-bg)', boxShadow: '0 0 16px rgba(225,29,72,0.2)', color: 'var(--text-primary)' } : { borderColor: 'var(--surface-input-border)', background: 'var(--surface-input-bg)', color: 'var(--text-primary)' }}
                         />
                         {searchExpanded && query && (
                             <button
                                 type="button"
                                 onClick={() => { onQueryChange(''); searchInputRef.current?.focus() }}
                                 aria-label="Clear search"
-                                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                                className="absolute right-3 top-1/2 -translate-y-1/2"
+                                style={{ color: 'var(--text-faint)' }}
                             >
                                 <X className="size-4" />
                             </button>
@@ -256,13 +268,26 @@ export function Navbar({
                     </div>
 
                     <div className="flex items-center gap-1">
+                        {/* Theme Toggle */}
+                        <button
+                            type="button"
+                            onClick={toggleTheme}
+                            aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+                            className="relative flex size-10 items-center justify-center rounded-full transition-all duration-300 hover:bg-red-500/10"
+                            style={{ color: 'var(--text-muted)' }}
+                        >
+                            <Moon className={`size-[18px] absolute transition-all duration-300 ${theme === 'dark' ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 -rotate-90 scale-0'}`} />
+                            <Sun className={`size-[18px] absolute transition-all duration-300 ${theme === 'light' ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 rotate-90 scale-0'}`} />
+                        </button>
+
                         {/* Notifications */}
                         <div className="relative" ref={notifRef}>
                             <button
                                 type="button"
                                 onClick={() => setNotifOpen((v) => !v)}
                                 aria-label="Notifications"
-                                className="relative flex size-10 items-center justify-center rounded-md text-white/50 transition-colors hover:text-red-400 hover:bg-red-500/10"
+                                className="relative flex size-10 items-center justify-center rounded-md transition-colors hover:text-red-400 hover:bg-red-500/10"
+                                style={{ color: 'var(--text-muted)' }}
                             >
                                 <Bell className="size-5" />
                                 {unreadCount > 0 && (
@@ -277,10 +302,10 @@ export function Navbar({
                                     role="dialog"
                                     aria-label="Notifications"
                                     className="absolute right-0 top-full mt-2 w-80 origin-top-right animate-in fade-in-0 zoom-in-95 rounded-xl shadow-xl backdrop-blur-xl"
-                                    style={{ border: '1px solid rgba(225,29,72,0.3)', background: 'rgba(10,5,8,0.97)', boxShadow: '0 0 30px rgba(225,29,72,0.15)' }}
+                                    style={{ border: '1px solid var(--surface-modal-border)', background: 'var(--surface-dropdown)', boxShadow: '0 0 30px rgba(225,29,72,0.15)' }}
                                 >
-                                    <div className="flex items-center justify-between px-4 py-3" style={{ borderBottom: '1px solid rgba(225,29,72,0.2)' }}>
-                                        <p className="font-display text-sm font-semibold tracking-wide text-foreground">Notifications</p>
+                                    <div className="flex items-center justify-between px-4 py-3" style={{ borderBottom: '1px solid var(--divider)' }}>
+                                        <p className="font-display text-sm font-semibold tracking-wide" style={{ color: 'var(--text-primary)' }}>Notifications</p>
                                         {unreadCount > 0 && (
                                             <button type="button" onClick={markAllRead} className="text-xs font-medium text-primary hover:underline">
                                                 Mark all read
@@ -293,15 +318,15 @@ export function Navbar({
                                                 <div className="flex gap-3 px-4 py-3 transition-colors hover:bg-primary/10">
                                                     <span className={`mt-1.5 size-2 shrink-0 rounded-full ${n.unread ? '' : 'bg-transparent'}`} style={n.unread ? { background: '#e11d48', boxShadow: '0 0 6px rgba(225,29,72,0.6)' } : {}} aria-hidden="true" />
                                                     <div className="min-w-0">
-                                                        <p className="text-sm font-medium text-foreground">{n.title}</p>
-                                                        <p className="mt-0.5 text-xs text-muted-foreground">{n.detail}</p>
-                                                        <p className="mt-1 text-[11px] text-muted-foreground/70">{n.time}</p>
+                                                        <p className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>{n.title}</p>
+                                                        <p className="mt-0.5 text-xs" style={{ color: 'var(--text-faint)' }}>{n.detail}</p>
+                                                        <p className="mt-1 text-[11px]" style={{ color: 'var(--text-faintest)' }}>{n.time}</p>
                                                     </div>
                                                 </div>
                                             </li>
                                         ))}
                                     </ul>
-                                    <div className="p-2" style={{ borderTop: '1px solid rgba(225,29,72,0.2)' }}>
+                                    <div className="p-2" style={{ borderTop: '1px solid var(--divider)' }}>
                                         <button type="button" className="w-full rounded-lg px-3 py-2 text-center text-sm font-medium text-red-400 transition-colors hover:bg-red-500/10">
                                             View all activity
                                         </button>
@@ -319,33 +344,33 @@ export function Navbar({
                                     aria-haspopup="menu"
                                     aria-expanded={profileOpen}
                                     aria-label="User menu"
-                                    className="flex items-center gap-2 rounded-full pl-1 pr-3 py-1 text-sm font-medium text-white transition-colors"
-                                    style={{ border: '1px solid rgba(225,29,72,0.3)', background: 'rgba(225,29,72,0.08)' }}
+                                    className="flex items-center gap-2 rounded-full pl-1 pr-3 py-1 text-sm font-medium transition-colors"
+                                    style={{ border: '1px solid var(--surface-modal-border)', background: 'var(--surface-hover)', color: 'var(--text-primary)' }}
                                 >
                                     <span className="flex size-7 items-center justify-center rounded-full text-xs font-bold text-white" style={{ background: 'linear-gradient(135deg, #e11d48, #9f1239)' }}>
                                         {initials}
                                     </span>
                                     <span className="hidden max-w-[100px] truncate sm:inline">{user.username}</span>
-                                    <ChevronDown className={`size-3.5 text-muted-foreground transition-transform ${profileOpen ? 'rotate-180' : ''}`} />
+                                    <ChevronDown className={`size-3.5 transition-transform ${profileOpen ? 'rotate-180' : ''}`} style={{ color: 'var(--text-faint)' }} />
                                 </button>
 
                                 {profileOpen && (
                                     <div
                                         role="menu"
                                         className="absolute right-0 top-full mt-2 w-56 origin-top-right animate-in fade-in-0 zoom-in-95 rounded-xl p-2 shadow-xl backdrop-blur-xl"
-                                        style={{ border: '1px solid rgba(225,29,72,0.3)', background: 'rgba(10,5,8,0.97)', boxShadow: '0 0 30px rgba(225,29,72,0.15)' }}
+                                        style={{ border: '1px solid var(--surface-modal-border)', background: 'var(--surface-dropdown)', boxShadow: '0 0 30px rgba(225,29,72,0.15)' }}
                                     >
-                                        <div className="px-3 py-2 mb-1" style={{ borderBottom: '1px solid rgba(225,29,72,0.2)' }}>
-                                            <p className="text-sm font-semibold text-foreground truncate">{user.username}</p>
-                                            <p className="text-xs text-muted-foreground truncate">{user.email}</p>
+                                        <div className="px-3 py-2 mb-1" style={{ borderBottom: '1px solid var(--divider)' }}>
+                                            <p className="text-sm font-semibold truncate" style={{ color: 'var(--text-primary)' }}>{user.username}</p>
+                                            <p className="text-xs truncate" style={{ color: 'var(--text-faint)' }}>{user.email}</p>
                                         </div>
-                                        <button type="button" role="menuitem" onClick={() => setProfileOpen(false)} className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-white/80 transition-colors hover:bg-red-500/10 hover:text-red-400">
+                                        <button type="button" role="menuitem" onClick={() => setProfileOpen(false)} className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm transition-colors hover:bg-red-500/10 hover:text-red-400" style={{ color: 'var(--text-secondary)' }}>
                                             <User className="size-4" /> My Profile
                                         </button>
-                                        <button type="button" role="menuitem" onClick={() => setProfileOpen(false)} className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-white/80 transition-colors hover:bg-red-500/10 hover:text-red-400">
+                                        <button type="button" role="menuitem" onClick={() => setProfileOpen(false)} className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm transition-colors hover:bg-red-500/10 hover:text-red-400" style={{ color: 'var(--text-secondary)' }}>
                                             <Settings className="size-4" /> Settings
                                         </button>
-                                        <div className="my-1" style={{ borderTop: '1px solid rgba(225,29,72,0.2)' }} />
+                                        <div className="my-1" style={{ borderTop: '1px solid var(--divider)' }} />
                                         <button type="button" role="menuitem" onClick={handleLogout} className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-red-400 transition-colors hover:bg-red-500/10">
                                             <LogOut className="size-4" /> Log out
                                         </button>
@@ -354,7 +379,7 @@ export function Navbar({
                             </div>
                         ) : (
                             <>
-                                <button type="button" onClick={openLoginModal} className="flex size-10 items-center justify-center rounded-md text-white/50 transition-colors hover:text-red-400 hover:bg-red-500/10 sm:hidden" aria-label="Log in">
+                                <button type="button" onClick={openLoginModal} className="flex size-10 items-center justify-center rounded-md transition-colors hover:text-red-400 hover:bg-red-500/10 sm:hidden" aria-label="Log in" style={{ color: 'var(--text-muted)' }}>
                                     <User className="size-5" />
                                 </button>
                                 <button type="button" onClick={openLoginModal} className="hidden items-center gap-2 rounded-md px-4 py-2 text-sm font-medium text-white transition-all sm:inline-flex" style={{ background: 'linear-gradient(135deg, #e11d48, #9f1239)', boxShadow: '0 2px 16px rgba(225,29,72,0.4)' }}>
@@ -391,13 +416,15 @@ function LoginModal({ onClose, onLoginSuccess }: LoginModalProps) {
     const [submitError, setSubmitError] = useState('')
 
     function handleSocialLogin(provider: 'google' | 'facebook' | 'apple') {
+        if (provider === 'google') {
+            signIn('google', { callbackUrl: '/' })
+            return
+        }
         const mockEmails: Record<string, string> = {
-            google: 'player@gmail.com',
             facebook: 'player@facebook.com',
             apple: 'player@icloud.com',
         }
         const mockNames: Record<string, string> = {
-            google: 'GooglePlayer',
             facebook: 'FBGamer',
             apple: 'AppleGamer',
         }
@@ -455,7 +482,7 @@ function LoginModal({ onClose, onLoginSuccess }: LoginModalProps) {
     }
 
     const inputCls = (err?: boolean) =>
-        `h-11 w-full rounded-lg border pl-10 pr-3 text-sm text-white placeholder:text-white/35 focus:outline-none transition-all ${err ? 'border-red-500' : ''}`
+        `h-11 w-full rounded-lg border pl-10 pr-3 text-sm placeholder:text-white/35 focus:outline-none transition-all ${err ? 'border-red-500' : ''}`
 
     return (
         <div
@@ -464,12 +491,12 @@ function LoginModal({ onClose, onLoginSuccess }: LoginModalProps) {
             aria-modal="true"
             aria-label="Log in or sign up"
         >
-            <div className="absolute inset-0 backdrop-blur-sm animate-in fade-in-0" style={{ background: 'rgba(5,5,8,0.8)' }} onClick={onClose} aria-hidden="true" />
+            <div className="absolute inset-0 backdrop-blur-sm animate-in fade-in-0" style={{ background: 'var(--surface-overlay)' }} onClick={onClose} aria-hidden="true" />
 
             <div className="relative w-full max-w-sm animate-in fade-in-0 zoom-in-95 rounded-2xl p-6 shadow-2xl"
-                style={{ background: 'rgba(12,6,9,0.98)', border: '1px solid rgba(225,29,72,0.3)', boxShadow: '0 0 60px rgba(225,29,72,0.18), 0 25px 50px rgba(0,0,0,0.6)' }}>
+                style={{ background: 'var(--surface-modal)', border: '1px solid var(--surface-modal-border)', boxShadow: '0 0 60px rgba(225,29,72,0.18), 0 25px 50px rgba(0,0,0,0.6)' }}>
 
-                <button type="button" onClick={onClose} aria-label="Close" className="absolute right-4 top-4 rounded-md p-1 text-white/40 transition-colors hover:text-white/80">
+                <button type="button" onClick={onClose} aria-label="Close" className="absolute right-4 top-4 rounded-md p-1 transition-colors" style={{ color: 'var(--text-faintest)' }}>
                     <X className="size-5" />
                 </button>
 
@@ -477,11 +504,11 @@ function LoginModal({ onClose, onLoginSuccess }: LoginModalProps) {
                     <span className="mb-3 inline-flex size-11 items-center justify-center rounded-xl text-white" style={{ background: 'linear-gradient(135deg, #e11d48, #9f1239)', boxShadow: '0 0 20px rgba(225,29,72,0.5)' }}>
                         <Gamepad2 className="size-5" />
                     </span>
-                    <h2 className="mt-3 font-display text-2xl font-bold tracking-wide text-white" style={{ fontFamily: "'Rajdhani', sans-serif" }}>
+                    <h2 className="mt-3 font-display text-2xl font-bold tracking-wide" style={{ fontFamily: "'Rajdhani', sans-serif", color: 'var(--text-primary)' }}>
                         {step === 'signup' ? 'Join NOVA' : 'Log in or sign up'}
                     </h2>
                     {step === 'password' && (
-                        <p className="mt-1 text-xs text-white/40">Continuing as <span className="text-red-400">{email}</span></p>
+                        <p className="mt-1 text-xs" style={{ color: 'var(--text-faintest)' }}>Continuing as <span className="text-red-400">{email}</span></p>
                     )}
                 </div>
 
@@ -518,14 +545,14 @@ function LoginModal({ onClose, onLoginSuccess }: LoginModalProps) {
                         </button>
 
                         <div className="flex items-center gap-3 my-1">
-                            <div className="h-px flex-1" style={{ background: 'rgba(225,29,72,0.2)' }} />
-                            <span className="text-xs font-semibold text-white/30 uppercase tracking-widest">OR</span>
-                            <div className="h-px flex-1" style={{ background: 'rgba(225,29,72,0.2)' }} />
+                            <div className="h-px flex-1" style={{ background: 'var(--divider)' }} />
+                            <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: 'var(--text-faintest)' }}>OR</span>
+                            <div className="h-px flex-1" style={{ background: 'var(--divider)' }} />
                         </div>
 
                         <form onSubmit={handleEmailContinue} className="flex flex-col gap-2">
                             <div className="relative">
-                                <Mail className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-white/35" />
+                                <Mail className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2" style={{ color: 'var(--text-faint)' }} />
                                 <input
                                     type="email" value={email}
                                     onChange={(e) => { setEmail(e.target.value); setEmailError('') }}
@@ -533,19 +560,19 @@ function LoginModal({ onClose, onLoginSuccess }: LoginModalProps) {
                                     autoComplete="email"
                                     className={inputCls(!!emailError)}
                                     style={emailError
-                                        ? { borderColor: '#ef4444', background: 'rgba(239,68,68,0.05)' }
-                                        : { borderColor: 'rgba(225,29,72,0.25)', background: 'rgba(225,29,72,0.06)' }}
+                                        ? { borderColor: '#ef4444', background: 'rgba(239,68,68,0.05)', color: 'var(--text-primary)' }
+                                        : { borderColor: 'var(--surface-input-border)', background: 'var(--surface-input-bg)', color: 'var(--text-primary)' }}
                                 />
                             </div>
                             {emailError && <p className="text-xs text-red-400">{emailError}</p>}
                             <button type="submit"
-                                className="h-11 w-full rounded-xl text-sm font-semibold text-white transition-all"
-                                style={{ background: email ? 'linear-gradient(135deg, #e11d48, #9f1239)' : 'rgba(255,255,255,0.06)', color: email ? '#fff' : 'rgba(255,255,255,0.35)', cursor: email ? 'pointer' : 'default', boxShadow: email ? '0 2px 16px rgba(225,29,72,0.35)' : 'none' }}>
+                                className="h-11 w-full rounded-xl text-sm font-semibold transition-all"
+                                style={{ background: email ? 'linear-gradient(135deg, #e11d48, #9f1239)' : 'var(--surface-hover)', color: email ? '#fff' : 'var(--text-faintest)', cursor: email ? 'pointer' : 'default', boxShadow: email ? '0 2px 16px rgba(225,29,72,0.35)' : 'none' }}>
                                 Continue with Email
                             </button>
                         </form>
 
-                        <p className="text-center text-xs text-white/30 mt-1">
+                        <p className="text-center text-xs mt-1" style={{ color: 'var(--text-faintest)' }}>
                             New here?{' '}
                             <button type="button" onClick={() => setStep('signup')} className="font-semibold text-red-400 hover:underline">
                                 Create account
@@ -562,24 +589,24 @@ function LoginModal({ onClose, onLoginSuccess }: LoginModalProps) {
                             </div>
                         )}
                         <div className="flex flex-col gap-1.5">
-                            <label className="text-sm font-medium text-white/80">Password</label>
+                            <label className="text-sm font-medium" style={{ color: 'var(--text-secondary)' }}>Password</label>
                             <div className="relative">
-                                <Lock className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-white/35" />
+                                <Lock className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2" style={{ color: 'var(--text-faint)' }} />
                                 <input
                                     type={showPassword ? 'text' : 'password'} value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                     placeholder="••••••••" autoComplete="current-password"
                                     className={inputCls()}
-                                    style={{ borderColor: 'rgba(225,29,72,0.25)', background: 'rgba(225,29,72,0.06)', paddingRight: '2.5rem' }}
+                                    style={{ borderColor: 'var(--surface-input-border)', background: 'var(--surface-input-bg)', paddingRight: '2.5rem', color: 'var(--text-primary)' }}
                                 />
-                                <button type="button" onClick={() => setShowPassword(v => !v)} className="absolute right-3 top-1/2 -translate-y-1/2 text-white/35 hover:text-white/70" tabIndex={-1}>
+                                <button type="button" onClick={() => setShowPassword(v => !v)} className="absolute right-3 top-1/2 -translate-y-1/2" style={{ color: 'var(--text-faint)' }} tabIndex={-1}>
                                     {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
                                 </button>
                             </div>
                         </div>
 
                         <div className="flex items-center justify-between text-xs">
-                            <button type="button" onClick={() => { setStep('social'); setPassword(''); setSubmitError('') }} className="text-white/40 hover:text-white/70">
+                            <button type="button" onClick={() => { setStep('social'); setPassword(''); setSubmitError('') }} style={{ color: 'var(--text-faintest)' }} className="hover:opacity-80">
                                 ← Back
                             </button>
                             <a href="#" className="font-medium text-red-400 hover:underline">Forgot password?</a>
@@ -591,7 +618,7 @@ function LoginModal({ onClose, onLoginSuccess }: LoginModalProps) {
                             <Check className="mr-2 inline size-4" /> Log in
                         </button>
 
-                        <p className="text-center text-xs text-white/30">
+                        <p className="text-center text-xs" style={{ color: 'var(--text-faintest)' }}>
                             No account?{' '}
                             <button type="button" onClick={() => { setStep('signup'); setPassword('') }} className="font-semibold text-red-400 hover:underline">
                                 Sign up
@@ -609,18 +636,18 @@ function LoginModal({ onClose, onLoginSuccess }: LoginModalProps) {
                         )}
 
                         {[
-                            { id: 'su-name', label: 'Username', value: username, setter: setUsername, icon: <User className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-white/35" />, type: 'text', placeholder: 'ProGamer99', auto: 'username' },
-                            { id: 'su-email', label: 'Email', value: email, setter: setEmail, icon: <Mail className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-white/35" />, type: 'email', placeholder: 'you@example.com', auto: 'email' },
+                            { id: 'su-name', label: 'Username', value: username, setter: setUsername, icon: <User className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2" style={{ color: 'var(--text-faint)' }} />, type: 'text', placeholder: 'ProGamer99', auto: 'username' },
+                            { id: 'su-email', label: 'Email', value: email, setter: setEmail, icon: <Mail className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2" style={{ color: 'var(--text-faint)' }} />, type: 'email', placeholder: 'you@example.com', auto: 'email' },
                         ].map(f => (
                             <div key={f.id} className="flex flex-col gap-1">
-                                <label htmlFor={f.id} className="text-sm font-medium text-white/80">{f.label}</label>
+                                <label htmlFor={f.id} className="text-sm font-medium" style={{ color: 'var(--text-secondary)' }}>{f.label}</label>
                                 <div className="relative">
                                     {f.icon}
                                     <input id={f.id} type={f.type} value={f.value}
                                         onChange={e => f.setter(e.target.value)}
                                         placeholder={f.placeholder} autoComplete={f.auto}
                                         className={inputCls()}
-                                        style={{ borderColor: 'rgba(225,29,72,0.25)', background: 'rgba(225,29,72,0.06)' }} />
+                                        style={{ borderColor: 'var(--surface-input-border)', background: 'var(--surface-input-bg)', color: 'var(--text-primary)' }} />
                                 </div>
                             </div>
                         ))}
@@ -630,15 +657,15 @@ function LoginModal({ onClose, onLoginSuccess }: LoginModalProps) {
                             { id: 'su-cpwd', label: 'Confirm Password', value: confirmPassword, setter: setConfirmPassword, show: showConfirm, showSetter: setShowConfirm, auto: 'new-password' },
                         ].map(f => (
                             <div key={f.id} className="flex flex-col gap-1">
-                                <label htmlFor={f.id} className="text-sm font-medium text-white/80">{f.label}</label>
+                                <label htmlFor={f.id} className="text-sm font-medium" style={{ color: 'var(--text-secondary)' }}>{f.label}</label>
                                 <div className="relative">
-                                    <Lock className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-white/35" />
+                                    <Lock className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2" style={{ color: 'var(--text-faint)' }} />
                                     <input id={f.id} type={f.show ? 'text' : 'password'} value={f.value}
                                         onChange={e => f.setter(e.target.value)}
                                         placeholder="••••••••" autoComplete={f.auto}
                                         className={inputCls()}
-                                        style={{ borderColor: 'rgba(225,29,72,0.25)', background: 'rgba(225,29,72,0.06)', paddingRight: '2.5rem' }} />
-                                    <button type="button" onClick={() => f.showSetter(v => !v)} className="absolute right-3 top-1/2 -translate-y-1/2 text-white/35 hover:text-white/70" tabIndex={-1}>
+                                        style={{ borderColor: 'var(--surface-input-border)', background: 'var(--surface-input-bg)', paddingRight: '2.5rem', color: 'var(--text-primary)' }} />
+                                    <button type="button" onClick={() => f.showSetter(v => !v)} className="absolute right-3 top-1/2 -translate-y-1/2" style={{ color: 'var(--text-faint)' }} tabIndex={-1}>
                                         {f.show ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
                                     </button>
                                 </div>
@@ -651,7 +678,7 @@ function LoginModal({ onClose, onLoginSuccess }: LoginModalProps) {
                             <Check className="mr-2 inline size-4" /> Create account
                         </button>
 
-                        <p className="text-center text-xs text-white/30">
+                        <p className="text-center text-xs" style={{ color: 'var(--text-faintest)' }}>
                             Already have an account?{' '}
                             <button type="button" onClick={() => { setStep('social'); setSubmitError('') }} className="font-semibold text-red-400 hover:underline">
                                 Log in

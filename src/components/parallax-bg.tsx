@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import { useTheme } from '@/lib/theme-context'
 
 const PARTICLE_COUNT = 35
 
@@ -14,6 +15,7 @@ interface Particle {
 }
 
 export function ParallaxBackground() {
+    const { theme } = useTheme()
     const gridRef = useRef<HTMLDivElement>(null)
     const orbRef1 = useRef<HTMLDivElement>(null)
     const orbRef2 = useRef<HTMLDivElement>(null)
@@ -57,7 +59,7 @@ export function ParallaxBackground() {
 
     // Generate stable particles
     const particles: Particle[] = Array.from({ length: PARTICLE_COUNT }, (_, i) => {
-        const seed = i * 137.508 // golden angle for even distribution
+        const seed = i * 137.508
         return {
             x: ((seed * 31) % 100),
             y: ((seed * 17) % 100),
@@ -67,6 +69,19 @@ export function ParallaxBackground() {
             delay: -(i * 0.7),
         }
     })
+
+    // Completely hide parallax in light mode
+    if (theme === 'light') {
+        return (
+            <div className="parallax-bg" aria-hidden="true">
+                <div style={{
+                    position: 'absolute',
+                    inset: 0,
+                    background: '#f5f0f2',
+                }} />
+            </div>
+        )
+    }
 
     return (
         <div className="parallax-bg" aria-hidden="true">
@@ -83,7 +98,7 @@ export function ParallaxBackground() {
             <div ref={gridRef} className="parallax-grid" />
             <div className="parallax-grid-diag" />
 
-            {/* Glowing orbs — each at different parallax depth */}
+            {/* Glowing orbs */}
             <div ref={orbRef1} className="parallax-orb parallax-orb-1" />
             <div ref={orbRef2} className="parallax-orb parallax-orb-2" />
             <div ref={orbRef3} className="parallax-orb parallax-orb-3" />

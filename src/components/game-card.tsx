@@ -3,6 +3,7 @@
 import { Play, Star, Users } from 'lucide-react'
 import Link from 'next/link'
 import { useAuth } from '@/lib/auth-context'
+import { useTheme } from '@/lib/theme-context'
 
 const categoryColors: Record<string, string> = {
     Racing: 'bg-orange-500',
@@ -16,6 +17,8 @@ const categoryColors: Record<string, string> = {
 
 export function GameCard({ game }: { game: any }) {
     const { user, openLoginModal } = useAuth()
+    const { theme } = useTheme()
+    const isLight = theme === 'light'
 
     function handlePlay(e: React.MouseEvent) {
         if (!user) {
@@ -30,19 +33,22 @@ export function GameCard({ game }: { game: any }) {
         <div
             className="group relative flex flex-col rounded-xl overflow-hidden transition-all duration-300 hover:-translate-y-1"
             style={{
-                background: 'rgba(10, 5, 7, 0.85)',
-                border: '1px solid rgba(255,255,255,0.06)',
-                backdropFilter: 'blur(4px)',
+                background: 'var(--surface-card)',
+                border: '1px solid var(--surface-card-border)',
+                boxShadow: isLight ? '0 2px 12px rgba(0,0,0,0.08)' : 'none',
+                transition: 'all 0.3s ease',
             }}
             onMouseEnter={e => {
                 const el = e.currentTarget as HTMLDivElement
-                el.style.border = '1px solid rgba(225, 29, 72, 0.45)'
-                el.style.boxShadow = '0 8px 30px rgba(225, 29, 72, 0.15)'
+                el.style.border = '1px solid var(--surface-card-hover-border)'
+                el.style.boxShadow = isLight
+                    ? '0 8px 30px rgba(225, 29, 72, 0.12), 0 4px 16px rgba(0,0,0,0.08)'
+                    : '0 8px 30px rgba(225, 29, 72, 0.15)'
             }}
             onMouseLeave={e => {
                 const el = e.currentTarget as HTMLDivElement
-                el.style.border = '1px solid rgba(255,255,255,0.06)'
-                el.style.boxShadow = 'none'
+                el.style.border = '1px solid var(--surface-card-border)'
+                el.style.boxShadow = isLight ? '0 2px 12px rgba(0,0,0,0.08)' : 'none'
             }}
         >
             {/* Poster image */}
@@ -55,7 +61,9 @@ export function GameCard({ game }: { game: any }) {
 
                 {/* Gradient overlay */}
                 <div className="absolute inset-0" style={{
-                    background: 'linear-gradient(to top, rgba(10,5,7,0.9) 0%, transparent 55%)',
+                    background: isLight
+                        ? 'linear-gradient(to top, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.3) 30%, transparent 55%)'
+                        : 'linear-gradient(to top, rgba(10,5,7,0.9) 0%, transparent 55%)',
                 }} />
 
                 {/* Category badge */}
@@ -73,13 +81,13 @@ export function GameCard({ game }: { game: any }) {
             {/* Card info */}
             <div className="flex flex-col gap-2 p-3">
                 <div>
-                    <h3 className="font-bold text-white text-sm leading-tight">{game.title}</h3>
+                    <h3 className="font-bold text-sm leading-tight" style={{ color: 'var(--text-primary)' }}>{game.title}</h3>
                     {game.subtitle && (
-                        <p className="text-xs text-white/35 mt-0.5">{game.subtitle}</p>
+                        <p className="text-xs mt-0.5" style={{ color: 'var(--text-faint)' }}>{game.subtitle}</p>
                     )}
                 </div>
 
-                <div className="flex items-center gap-1.5 text-[11px] text-white/40">
+                <div className="flex items-center gap-1.5 text-[11px]" style={{ color: 'var(--text-muted)' }}>
                     <Users className="size-3" />
                     <span>{game.players} players</span>
                 </div>
@@ -89,7 +97,10 @@ export function GameCard({ game }: { game: any }) {
                         className="w-full flex items-center justify-center gap-2 rounded-lg py-2 text-xs font-semibold text-white transition-all"
                         style={{
                             border: '1px solid rgba(225, 29, 72, 0.3)',
-                            background: 'rgba(225, 29, 72, 0.1)',
+                            background: isLight
+                                ? 'linear-gradient(135deg, #e11d48, #be123c)'
+                                : 'rgba(225, 29, 72, 0.1)',
+                            boxShadow: isLight ? '0 2px 8px rgba(225,29,72,0.25)' : 'none',
                         }}
                         onMouseEnter={e => {
                             const el = e.currentTarget as HTMLButtonElement
@@ -99,9 +110,14 @@ export function GameCard({ game }: { game: any }) {
                         }}
                         onMouseLeave={e => {
                             const el = e.currentTarget as HTMLButtonElement
-                            el.style.background = 'rgba(225, 29, 72, 0.1)'
+                            if (isLight) {
+                                el.style.background = 'linear-gradient(135deg, #e11d48, #be123c)'
+                                el.style.boxShadow = '0 2px 8px rgba(225,29,72,0.25)'
+                            } else {
+                                el.style.background = 'rgba(225, 29, 72, 0.1)'
+                                el.style.boxShadow = 'none'
+                            }
                             el.style.border = '1px solid rgba(225, 29, 72, 0.3)'
-                            el.style.boxShadow = 'none'
                         }}
                     >
                         <Play className="w-3 h-3 fill-current" />

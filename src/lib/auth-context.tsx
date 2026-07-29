@@ -1,10 +1,12 @@
 'use client'
 
 import { createContext, useContext, useEffect, useState } from 'react'
+import { useSession, signOut } from 'next-auth/react'
 
 export type AuthUser = {
     username: string
     email: string
+    image?: string
 }
 
 type AuthContextType = {
@@ -26,15 +28,29 @@ const AuthContext = createContext<AuthContextType>({
 })
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
+    const { data: session } = useSession()
     const [user, setUser] = useState<AuthUser | null>(null)
     const [loginModalOpen, setLoginModalOpen] = useState(false)
 
+    // Sync NextAuth session → local user state
     useEffect(() => {
-        try {
-            const stored = localStorage.getItem('nova_user')
-            if (stored) setUser(JSON.parse(stored))
-        } catch { }
-    }, [])
+        if (session?.user) {
+            const sessionUser: AuthUser = {
+                username: session.user.name ?? session.user.email?.split('@')[0] ?? 'Player',
+                email: session.user.email ?? '',
+                image: session.user.image ?? undefined,
+            }
+            setUser(sessionUser)
+            localStorage.setItem('nova_user', JSON.stringify(sessionUser))
+            setLoginModalOpen(false)
+        } else {
+            // Fallback: check localStorage for legacy/email-based logins
+            try {
+                const stored = localStorage.getItem('nova_user')
+                if (stored) setUser(JSON.parse(stored))
+            } catch { }
+        }
+    }, [session])
 
     function login(u: AuthUser) {
         setUser(u)
@@ -46,6 +62,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setUser(null)
         localStorage.removeItem('nova_user')
         localStorage.removeItem('nova_pwd')
+        // Also sign out from NextAuth (clears JWT/session cookie)
+        if (session) {
+            signOut({ redirect: false })
+        }
     }
 
     return (
