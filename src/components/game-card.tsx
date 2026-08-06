@@ -81,7 +81,7 @@ export function GameCard({ game }: { game: any }) {
             {/* Card info */}
             <div className="flex flex-col gap-2 p-3">
                 <div>
-                    <h3 className="font-bold text-sm leading-tight" style={{ color: 'var(--text-primary)' }}>{game.title}</h3>
+                    <h3 className="font-display font-bold text-sm leading-tight" style={{ color: 'var(--text-primary)' }}>{game.title}</h3>
                     {game.subtitle && (
                         <p className="text-xs mt-0.5" style={{ color: 'var(--text-faint)' }}>{game.subtitle}</p>
                     )}

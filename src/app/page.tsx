@@ -35,7 +35,7 @@ export default function HomePage() {
           <div className="flex-1 min-w-0">
             <div className="flex justify-between items-center mb-5">
               <div>
-                <h2 className="text-2xl font-bold" style={{ fontFamily: "'Rajdhani', sans-serif", letterSpacing: '0.04em', color: 'var(--text-primary)' }}>
+                <h2 className="text-2xl font-bold" style={{ letterSpacing: '0.04em', color: 'var(--text-primary)' }}>
                   {selectedCategory}
                 </h2>
                 <p className="text-xs mt-0.5" style={{ color: 'var(--text-faint)' }}>{filteredGames.length} games available</p>

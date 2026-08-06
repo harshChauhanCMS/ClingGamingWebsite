@@ -28,7 +28,7 @@ export default function PlayPage() {
 
                 {/* Game Title & Info */}
                 <div className="mb-4 md:mb-6">
-                    <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold" style={{ color: 'var(--text-primary)' }}>{game.title}</h1>
+                    <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold font-display" style={{ color: 'var(--text-primary)' }}>{game.title}</h1>
                     <p className="text-xs sm:text-sm mt-1" style={{ color: 'var(--text-muted)' }}>{game.category} • Fullscreen Mode available</p>
                 </div>
 
@@ -44,7 +44,7 @@ export default function PlayPage() {
 
                 {/* Description Section */}
                 <div className="mt-6 md:mt-8 p-5 md:p-8 rounded-xl md:rounded-3xl" style={{ background: 'var(--surface-card)', border: '1px solid var(--surface-card-border)' }}>
-                    <h2 className="text-lg md:text-xl font-bold mb-3 md:mb-4" style={{ color: 'var(--text-primary)' }}>How to Play</h2>
+                    <h2 className="text-lg md:text-xl font-bold font-display mb-3 md:mb-4" style={{ color: 'var(--text-primary)' }}>How to Play</h2>
                     <p className="text-sm md:text-base leading-relaxed" style={{ color: 'var(--text-muted)' }}>
                         Use your keyboard and mouse to interact with the game. This game is powered by WebGL/Three.js
                         for smooth 3D performance. If you experience lag, ensure your browser&apos;s hardware acceleration is turned on.

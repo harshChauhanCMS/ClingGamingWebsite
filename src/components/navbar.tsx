@@ -164,7 +164,7 @@ export function Navbar({
                             <Gamepad2 className="size-5" />
                         </span>
                         <span className="hidden font-display text-xl font-bold tracking-widest glow-text sm:inline" style={{ color: 'var(--text-primary)' }}>
-                            NOVA
+                            Cling
                         </span>
                     </a>
 
@@ -504,7 +504,7 @@ function LoginModal({ onClose, onLoginSuccess }: LoginModalProps) {
                     <span className="mb-3 inline-flex size-11 items-center justify-center rounded-xl text-white" style={{ background: 'linear-gradient(135deg, #e11d48, #9f1239)', boxShadow: '0 0 20px rgba(225,29,72,0.5)' }}>
                         <Gamepad2 className="size-5" />
                     </span>
-                    <h2 className="mt-3 font-display text-2xl font-bold tracking-wide" style={{ fontFamily: "'Rajdhani', sans-serif", color: 'var(--text-primary)' }}>
+                    <h2 className="mt-3 font-display text-2xl font-bold tracking-wide" style={{ color: 'var(--text-primary)' }}>
                         {step === 'signup' ? 'Join NOVA' : 'Log in or sign up'}
                     </h2>
                     {step === 'password' && (

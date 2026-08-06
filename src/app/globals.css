@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Rajdhani:wght@600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
 
 :root {
@@ -108,7 +108,7 @@
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --font-sans: 'Inter', system-ui, sans-serif;
-  --font-display: 'Rajdhani', 'Inter', sans-serif;
+  --font-display: 'Orbitron', 'Inter', sans-serif;
 }
 
 *,
@@ -125,9 +125,64 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 400;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
   transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ─── Typography System ────────────────────────────────────── */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Orbitron', sans-serif;
+}
+
+h1 {
+  font-weight: 800;
+}
+
+h2,
+h3 {
+  font-weight: 700;
+}
+
+h4,
+h5,
+h6 {
+  font-weight: 600;
+}
+
+button,
+.btn {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 600;
+}
+
+nav,
+nav a,
+nav button,
+nav span {
+  font-family: 'Orbitron', sans-serif;
+}
+
+p,
+label,
+span:not(nav span),
+li,
+td,
+th {
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+input,
+textarea,
+select {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 400;
 }
 
 ::-webkit-scrollbar {

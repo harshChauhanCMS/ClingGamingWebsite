@@ -47,8 +47,7 @@ export function Hero() {
 
                 {/* Title */}
                 <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2 md:mb-3 leading-tight" style={{
-                    fontFamily: "'Rajdhani', sans-serif",
-                    letterSpacing: '0.03em',
+                    letterSpacing: '0.05em',
                     textShadow: '0 0 40px rgba(225, 29, 72, 0.3)',
                     color: 'var(--text-primary)',
                 }}>
