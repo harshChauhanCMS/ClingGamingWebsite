@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { AuthProvider } from "@/lib/auth-context";
 import { ParallaxBackground } from "@/components/parallax-bg";
-import NextAuthSessionProvider from "@/components/session-provider";
 import { ThemeProvider } from "@/lib/theme-context";
 
 export const metadata: Metadata = {
@@ -18,18 +16,14 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full antialiased">
       <body className="min-h-full flex flex-col relative" style={{ background: 'var(--surface-bg)' }}>
-        <NextAuthSessionProvider>
-          <ThemeProvider>
-            {/* Animated parallax background — always behind content */}
-            <ParallaxBackground />
-            <AuthProvider>
-              {/* Content layer sits above the fixed background */}
-              <div className="relative z-10 flex flex-col min-h-full">
-                {children}
-              </div>
-            </AuthProvider>
-          </ThemeProvider>
-        </NextAuthSessionProvider>
+        <ThemeProvider>
+          {/* Animated parallax background — always behind content */}
+          <ParallaxBackground />
+          {/* Content layer sits above the fixed background */}
+          <div className="relative z-10 flex flex-col min-h-full">
+            {children}
+          </div>
+        </ThemeProvider>
       </body>
     </html>
   );

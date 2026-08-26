@@ -2,13 +2,13 @@
 
 import { Play, Star, Users } from 'lucide-react'
 import Link from 'next/link'
-import { useAuth } from '@/lib/auth-context'
 import { useTheme } from '@/lib/theme-context'
 
 const categoryColors: Record<string, string> = {
     Racing: 'bg-orange-500',
     Shooting: 'bg-red-600',
     Adventure: 'bg-emerald-600',
+    Action: 'bg-red-700',
     Strategy: 'bg-blue-600',
     Sports: 'bg-lime-600',
     Horror: 'bg-rose-900',
@@ -16,16 +16,8 @@ const categoryColors: Record<string, string> = {
 }
 
 export function GameCard({ game }: { game: any }) {
-    const { user, openLoginModal } = useAuth()
     const { theme } = useTheme()
     const isLight = theme === 'light'
-
-    function handlePlay(e: React.MouseEvent) {
-        if (!user) {
-            e.preventDefault()
-            openLoginModal()
-        }
-    }
 
     const catColor = categoryColors[game.category] ?? 'bg-red-700'
 
@@ -52,7 +44,7 @@ export function GameCard({ game }: { game: any }) {
             }}
         >
             {/* Poster image */}
-            <div className="relative aspect-[3/4] overflow-hidden">
+            <div className="relative aspect-[4/3] overflow-hidden">
                 <img
                     src={game.image}
                     alt={game.title}
@@ -92,7 +84,7 @@ export function GameCard({ game }: { game: any }) {
                     <span>{game.players} players</span>
                 </div>
 
-                <Link href={`/play/${game.id}`} onClick={handlePlay}>
+                <Link href={`/play/${game.id}`}>
                     <button
                         className="w-full flex items-center justify-center gap-2 rounded-lg py-2 text-xs font-semibold text-white transition-all"
                         style={{
@@ -121,7 +113,7 @@ export function GameCard({ game }: { game: any }) {
                         }}
                     >
                         <Play className="w-3 h-3 fill-current" />
-                        {user ? 'Play Now' : 'Login to Play'}
+                        Play Now
                     </button>
                 </Link>
             </div>
