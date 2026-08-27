@@ -1,7 +1,6 @@
 'use client'
 
 import { categories } from '@/lib/games'
-import { Crown } from 'lucide-react'
 import { useTheme } from '@/lib/theme-context'
 
 export function CategorySidebar({ activeCategory, setCategory }: { activeCategory: string; setCategory: (cat: string) => void }) {
@@ -37,31 +36,6 @@ export function CategorySidebar({ activeCategory, setCategory }: { activeCategor
                 ))}
             </div>
 
-            {/* Go Premium card */}
-            <div className="hidden md:block mt-4 rounded-xl p-4" style={{
-                border: isLight ? '1px solid rgba(0,0,0,0.08)' : '1px solid var(--surface-modal-border)',
-                background: isLight ? '#ffffff' : 'rgba(180, 10, 30, 0.12)',
-                boxShadow: isLight ? '0 2px 12px rgba(0,0,0,0.06)' : 'none',
-            }}>
-                <div className="flex items-center gap-2 mb-2">
-                    <Crown className="size-4 text-yellow-400" />
-                    <p className="text-sm font-bold" style={{ color: 'var(--text-primary)' }}>Go Premium</p>
-                </div>
-                <p className="text-xs mb-3 leading-relaxed" style={{ color: 'var(--text-muted)' }}>
-                    Unlock every title, ad-free play, and exclusive drops.
-                </p>
-                <button
-                    className="w-full rounded-lg py-2 text-xs font-semibold text-white transition-all"
-                    style={{
-                        background: 'linear-gradient(135deg, #e11d48, #9f1239)',
-                        boxShadow: '0 2px 12px rgba(225, 29, 72, 0.3)',
-                    }}
-                    onMouseEnter={e => (e.currentTarget.style.boxShadow = '0 2px 20px rgba(225, 29, 72, 0.6)')}
-                    onMouseLeave={e => (e.currentTarget.style.boxShadow = '0 2px 12px rgba(225, 29, 72, 0.3)')}
-                >
-                    Upgrade Now
-                </button>
-            </div>
         </aside>
     )
 }

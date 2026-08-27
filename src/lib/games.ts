@@ -7,6 +7,7 @@ export const categories = [
     { id: 'sports', name: 'Sports', icon: '⚽' },
     { id: 'horror', name: 'Horror', icon: '👻' },
     { id: 'puzzle', name: 'Puzzle', icon: '🧩' },
+    { id: 'arcade', name: 'Arcade', icon: '🕹️' },
 ];
 
 export const games = [
@@ -51,11 +52,21 @@ export const games = [
         playUrl: 'https://html5.gamedistribution.com/917cce8c44c44638a8cdc2a1794b65c8/'
     },
     {
+        id: 'fireboy-watergirl',
+        title: 'Fireboy & Watergirl',
+        subtitle: 'Forest Temple Adventure',
+        category: 'Adventure',
+        image: '/ChatGPT Image Aug 27, 2026, 12_25_53 PM.png',
+        rating: '4.8',
+        players: '5.2M',
+        playUrl: 'https://html5.gamedistribution.com/3cee7f1aae1e4bccb01a3c58e8e5a9d2/'
+    },
+    {
         id: 'fruit-ninja',
         title: 'Fruit Ninja',
         subtitle: 'Slice & Dice Fruits',
         category: 'Arcade',
-        image: 'https://img.gamedistribution.com/a186dc9ac7f548f884db8ff54df6dd9f-512x384.jpeg',
+        image: '/Gemini_Generated_Image_aedw0baedw0baedw.png',
         rating: '4.5',
         players: '920K',
         playUrl: 'https://html5.gamedistribution.com/a186dc9ac7f548f884db8ff54df6dd9f/'
