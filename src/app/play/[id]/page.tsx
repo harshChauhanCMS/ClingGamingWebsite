@@ -17,7 +17,7 @@ export default function PlayPage() {
     // Browser ka title change karne ke liye
     useEffect(() => {
         if (game) {
-            document.title = `Playing ${game.title} | Cling Games`;
+            document.title = `Playing ${game.title} | ClingVerse`;
         }
     }, [game]);
 

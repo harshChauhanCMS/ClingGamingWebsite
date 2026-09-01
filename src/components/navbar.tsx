@@ -89,7 +89,7 @@ export function Navbar({
                         <Gamepad2 className="size-5" />
                     </span>
                     <span className="hidden font-display text-xl font-bold tracking-widest glow-text sm:inline" style={{ color: 'var(--text-primary)' }}>
-                        Cling
+                        ClingVerse
                     </span>
                 </a>
 

@@ -22,7 +22,7 @@ export function Hero() {
             <img
                 src="/Gemini_Generated_Image_f7r6dpf7r6dpf7r6.png"
                 className="absolute inset-0 w-full h-full object-cover object-right"
-                alt="Cling gaming platform"
+                alt="ClingVerse gaming platform"
             />
 
             {/* Gradient overlays */}
