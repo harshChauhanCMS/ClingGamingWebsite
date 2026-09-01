@@ -3,10 +3,6 @@ export const categories = [
     { id: 'racing', name: 'Racing', icon: '🏎️' },
     { id: 'adventure', name: 'Adventure', icon: '🗺️' },
     { id: 'shooting', name: 'Shooting', icon: '🎯' },
-    { id: 'strategy', name: 'Strategy', icon: '♟️' },
-    { id: 'sports', name: 'Sports', icon: '⚽' },
-    { id: 'horror', name: 'Horror', icon: '👻' },
-    { id: 'puzzle', name: 'Puzzle', icon: '🧩' },
     { id: 'arcade', name: 'Arcade', icon: '🕹️' },
 ];
 

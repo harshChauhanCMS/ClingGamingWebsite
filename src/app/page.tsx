@@ -32,7 +32,7 @@ export default function HomePage() {
             setCategory={setSelectedCategory}
           />
 
-          <div className="flex-1 min-w-0">
+          <div id="all-games" className="flex-1 min-w-0 scroll-mt-24">
             <div className="flex justify-between items-center mb-5">
               <div>
                 <h2 className="text-2xl font-bold" style={{ letterSpacing: '0.04em', color: 'var(--text-primary)' }}>

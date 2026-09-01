@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from 'react'
 import {
-    Bell,
     ChevronDown,
     Gamepad2,
     Moon,
@@ -18,38 +17,6 @@ type NavbarProps = {
     onQueryChange: (value: string) => void
     onSelectCategory?: (category: string) => void
 }
-
-type Notification = {
-    id: string
-    title: string
-    detail: string
-    time: string
-    unread: boolean
-}
-
-const initialNotifications: Notification[] = [
-    {
-        id: 'n1',
-        title: 'Void Strike Season 4 is live',
-        detail: 'New maps, ranked rewards, and a battle pass await.',
-        time: '2m ago',
-        unread: true,
-    },
-    {
-        id: 'n2',
-        title: 'Friend request from NeonRider',
-        detail: 'You have a new co-op invite for Neon Drift.',
-        time: '1h ago',
-        unread: true,
-    },
-    {
-        id: 'n3',
-        title: 'Achievement unlocked',
-        detail: 'You reached the top 5% in Cyber League this week.',
-        time: '5h ago',
-        unread: false,
-    },
-]
 
 const navLinks = ['Home', 'New', 'Top Rated', 'Community']
 
@@ -78,30 +45,23 @@ export function Navbar({
     const { theme, toggleTheme } = useTheme()
 
     const [browseOpen, setBrowseOpen] = useState(false)
-    const [notifOpen, setNotifOpen] = useState(false)
     const [searchExpanded, setSearchExpanded] = useState(false)
-    const [notifications, setNotifications] = useState(initialNotifications)
 
     const browseRef = useRef<HTMLDivElement>(null)
-    const notifRef = useRef<HTMLDivElement>(null)
     const searchRef = useRef<HTMLDivElement>(null)
     const searchInputRef = useRef<HTMLInputElement>(null)
 
     useClickOutside(browseRef, () => setBrowseOpen(false), browseOpen)
-    useClickOutside(notifRef, () => setNotifOpen(false), notifOpen)
     useClickOutside(
         searchRef,
         () => { if (!query) setSearchExpanded(false) },
         searchExpanded,
     )
 
-    const unreadCount = notifications.filter((n) => n.unread).length
-
     useEffect(() => {
         function onKey(e: KeyboardEvent) {
             if (e.key === 'Escape') {
                 setBrowseOpen(false)
-                setNotifOpen(false)
                 if (!query) setSearchExpanded(false)
             }
         }
@@ -117,10 +77,6 @@ export function Navbar({
     function handleBrowseSelect(category: string) {
         onSelectCategory?.(category)
         setBrowseOpen(false)
-    }
-
-    function markAllRead() {
-        setNotifications((prev) => prev.map((n) => ({ ...n, unread: false })))
     }
 
     const isLight = theme === 'light'
@@ -248,61 +204,6 @@ export function Navbar({
                         <Moon className={`size-[18px] absolute transition-all duration-300 ${theme === 'dark' ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 -rotate-90 scale-0'}`} />
                         <Sun className={`size-[18px] absolute transition-all duration-300 ${theme === 'light' ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 rotate-90 scale-0'}`} />
                     </button>
-
-                    {/* Notifications */}
-                    <div className="relative" ref={notifRef}>
-                        <button
-                            type="button"
-                            onClick={() => setNotifOpen((v) => !v)}
-                            aria-label="Notifications"
-                            className="relative flex size-10 items-center justify-center rounded-md transition-colors hover:text-red-400 hover:bg-red-500/10"
-                            style={{ color: 'var(--text-muted)' }}
-                        >
-                            <Bell className="size-5" />
-                            {unreadCount > 0 && (
-                                <span className="absolute right-1.5 top-1.5 flex size-4 items-center justify-center rounded-full text-[10px] font-bold text-white" style={{ background: '#e11d48', boxShadow: '0 0 8px rgba(225,29,72,0.6)' }}>
-                                    {unreadCount}
-                                </span>
-                            )}
-                        </button>
-
-                        {notifOpen && (
-                            <div
-                                role="dialog"
-                                aria-label="Notifications"
-                                className="absolute right-0 top-full mt-2 w-80 origin-top-right animate-in fade-in-0 zoom-in-95 rounded-xl shadow-xl backdrop-blur-xl"
-                                style={{ border: '1px solid var(--surface-modal-border)', background: 'var(--surface-dropdown)', boxShadow: '0 0 30px rgba(225,29,72,0.15)' }}
-                            >
-                                <div className="flex items-center justify-between px-4 py-3" style={{ borderBottom: '1px solid var(--divider)' }}>
-                                    <p className="font-display text-sm font-semibold tracking-wide" style={{ color: 'var(--text-primary)' }}>Notifications</p>
-                                    {unreadCount > 0 && (
-                                        <button type="button" onClick={markAllRead} className="text-xs font-medium text-primary hover:underline">
-                                            Mark all read
-                                        </button>
-                                    )}
-                                </div>
-                                <ul className="max-h-80 overflow-y-auto py-1">
-                                    {notifications.map((n) => (
-                                        <li key={n.id}>
-                                            <div className="flex gap-3 px-4 py-3 transition-colors hover:bg-primary/10">
-                                                <span className={`mt-1.5 size-2 shrink-0 rounded-full ${n.unread ? '' : 'bg-transparent'}`} style={n.unread ? { background: '#e11d48', boxShadow: '0 0 6px rgba(225,29,72,0.6)' } : {}} aria-hidden="true" />
-                                                <div className="min-w-0">
-                                                    <p className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>{n.title}</p>
-                                                    <p className="mt-0.5 text-xs" style={{ color: 'var(--text-faint)' }}>{n.detail}</p>
-                                                    <p className="mt-1 text-[11px]" style={{ color: 'var(--text-faintest)' }}>{n.time}</p>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    ))}
-                                </ul>
-                                <div className="p-2" style={{ borderTop: '1px solid var(--divider)' }}>
-                                    <button type="button" className="w-full rounded-lg px-3 py-2 text-center text-sm font-medium text-red-400 transition-colors hover:bg-red-500/10">
-                                        View all activity
-                                    </button>
-                                </div>
-                            </div>
-                        )}
-                    </div>
                 </div>
             </div>
         </header>
