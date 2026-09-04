@@ -70,15 +70,17 @@ export function ParallaxBackground() {
         }
     })
 
-    // Completely hide parallax in light mode
+    // Soft pastel gradient mesh in light mode
     if (theme === 'light') {
         return (
             <div className="parallax-bg" aria-hidden="true">
                 <div style={{
                     position: 'absolute',
                     inset: 0,
-                    background: '#f5f0f2',
+                    background: 'linear-gradient(180deg, #fffafb 0%, #fdf6f7 100%)',
                 }} />
+                <div ref={orbRef1} className="parallax-orb-light parallax-orb-light-1" />
+                <div ref={orbRef2} className="parallax-orb-light parallax-orb-light-2" />
             </div>
         )
     }

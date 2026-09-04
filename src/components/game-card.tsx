@@ -9,6 +9,7 @@ const categoryColors: Record<string, string> = {
     Shooting: 'bg-red-600',
     Adventure: 'bg-emerald-600',
     Action: 'bg-red-700',
+    Arcade: 'bg-purple-600',
     Strategy: 'bg-blue-600',
     Sports: 'bg-lime-600',
     Horror: 'bg-rose-900',
@@ -27,7 +28,7 @@ export function GameCard({ game }: { game: any }) {
             style={{
                 background: 'var(--surface-card)',
                 border: '1px solid var(--surface-card-border)',
-                boxShadow: isLight ? '0 2px 12px rgba(0,0,0,0.08)' : 'none',
+                boxShadow: isLight ? '0 2px 14px rgba(225,29,72,0.08), 0 1px 4px rgba(0,0,0,0.04)' : 'none',
                 transition: 'all 0.3s ease',
             }}
             onMouseEnter={e => {

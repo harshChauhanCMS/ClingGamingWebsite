@@ -61,7 +61,7 @@ export function Hero() {
 
                 {/* Headline */}
                 <h1 className="hero-fade-up font-display font-extrabold uppercase leading-[0.98] mb-4 md:mb-5" style={{ animationDelay: '90ms', letterSpacing: '0.01em' }}>
-                    <span className="block text-3xl sm:text-4xl md:text-6xl" style={{ color: 'var(--text-primary)', textShadow: '0 0 30px rgba(225,29,72,0.25)' }}>
+                    <span className="block text-3xl sm:text-4xl md:text-6xl" style={{ color: '#ffffff', textShadow: '0 0 30px rgba(225,29,72,0.25)' }}>
                         Your Next
                     </span>
                     <span
@@ -76,13 +76,13 @@ export function Hero() {
                     >
                         Obsession
                     </span>
-                    <span className="block text-3xl sm:text-4xl md:text-6xl" style={{ color: 'var(--text-primary)', textShadow: '0 0 30px rgba(225,29,72,0.25)' }}>
+                    <span className="block text-3xl sm:text-4xl md:text-6xl" style={{ color: '#ffffff', textShadow: '0 0 30px rgba(225,29,72,0.25)' }}>
                         Starts Here.
                     </span>
                 </h1>
 
                 {/* Description */}
-                <p className="hero-fade-up text-xs sm:text-sm mb-5 md:mb-7 leading-relaxed max-w-xs md:max-w-sm" style={{ animationDelay: '180ms', color: 'var(--text-muted)' }}>
+                <p className="hero-fade-up text-xs sm:text-sm mb-5 md:mb-7 leading-relaxed max-w-xs md:max-w-sm" style={{ animationDelay: '180ms', color: 'rgba(255,255,255,0.72)' }}>
                     Discover games worth playing. Explore epic worlds, compete with players, and find your next favorite game.
                 </p>
 
@@ -91,7 +91,7 @@ export function Hero() {
                     {stats.map((stat, i) => (
                         <div key={stat.label} className="flex items-center gap-4 sm:gap-6">
                             {i > 0 && (
-                                <span className="h-8 w-px" style={{ background: 'var(--divider)' }} aria-hidden="true" />
+                                <span className="h-8 w-px" style={{ background: 'rgba(255,255,255,0.25)' }} aria-hidden="true" />
                             )}
                             <div className="flex items-center gap-2">
                                 <span className="flex items-center justify-center rounded-full size-7 sm:size-9 shrink-0" style={{
@@ -101,10 +101,10 @@ export function Hero() {
                                     <stat.icon className="size-3.5 sm:size-4" style={{ color: '#ff6080' }} />
                                 </span>
                                 <div className="flex flex-col leading-none">
-                                    <span className="text-sm sm:text-base font-bold font-display" style={{ color: 'var(--text-primary)' }}>
+                                    <span className="text-sm sm:text-base font-bold font-display" style={{ color: '#ffffff' }}>
                                         {stat.value}
                                     </span>
-                                    <span className="text-[9px] sm:text-[10px] uppercase tracking-wider mt-1" style={{ color: 'var(--text-faint)' }}>
+                                    <span className="text-[9px] sm:text-[10px] uppercase tracking-wider mt-1" style={{ color: 'rgba(255,255,255,0.6)' }}>
                                         {stat.label}
                                     </span>
                                 </div>

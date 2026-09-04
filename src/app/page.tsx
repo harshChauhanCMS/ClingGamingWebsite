@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { games } from '@/lib/games'
 import { Navbar } from '@/components/navbar'
 import { Hero } from '@/components/hero'
@@ -10,6 +10,15 @@ import { GameCard } from '@/components/game-card'
 export default function HomePage() {
   const [query, setQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('All Games')
+
+  // Pick up a category handed off from another page, e.g. /?category=Racing
+  useEffect(() => {
+    const category = new URLSearchParams(window.location.search).get('category')
+    if (category) {
+      setSelectedCategory(category)
+      document.getElementById('all-games')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  }, [])
 
   const filteredGames = useMemo(() => {
     return games.filter((game) => {

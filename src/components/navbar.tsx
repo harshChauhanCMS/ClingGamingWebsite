@@ -1,6 +1,8 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import Link from 'next/link'
+import { usePathname, useRouter } from 'next/navigation'
 import {
     ChevronDown,
     Gamepad2,
@@ -18,7 +20,12 @@ type NavbarProps = {
     onSelectCategory?: (category: string) => void
 }
 
-const navLinks = ['Home', 'New', 'Top Rated', 'Community']
+const navLinks = [
+    { label: 'Home', href: '/' },
+    { label: 'New', href: '/new' },
+    { label: 'Top Rated', href: '/top-rated' },
+    { label: 'Community', href: '/community' },
+]
 
 function useClickOutside(
     ref: React.RefObject<HTMLElement | null>,
@@ -43,6 +50,8 @@ export function Navbar({
     onSelectCategory,
 }: NavbarProps) {
     const { theme, toggleTheme } = useTheme()
+    const pathname = usePathname()
+    const router = useRouter()
 
     const [browseOpen, setBrowseOpen] = useState(false)
     const [searchExpanded, setSearchExpanded] = useState(false)
@@ -75,32 +84,36 @@ export function Navbar({
     }
 
     function handleBrowseSelect(category: string) {
-        onSelectCategory?.(category)
+        if (onSelectCategory) {
+            onSelectCategory(category)
+        } else {
+            router.push(`/?category=${encodeURIComponent(category)}`)
+        }
         setBrowseOpen(false)
     }
 
     const isLight = theme === 'light'
 
     return (
-        <header className="sticky top-0 z-50 backdrop-blur-xl" style={{ borderBottom: isLight ? '1px solid rgba(0,0,0,0.08)' : '1px solid var(--border)', background: 'var(--navbar-bg)', boxShadow: isLight ? '0 2px 12px rgba(0,0,0,0.06)' : 'none', transition: 'all 0.3s ease' }}>
+        <header className="sticky top-0 z-50 backdrop-blur-xl" style={{ borderBottom: isLight ? '1px solid rgba(225,29,72,0.12)' : '1px solid var(--border)', background: 'var(--navbar-bg)', boxShadow: isLight ? '0 2px 20px rgba(225,29,72,0.08)' : 'none', transition: 'all 0.3s ease' }}>
             <div className="mx-auto flex h-16 max-w-[1600px] items-center gap-2 px-4 md:gap-4 md:px-6">
-                <a href="/" className="flex items-center gap-2">
+                <Link href="/" className="flex items-center gap-2">
                     <span className="flex size-9 items-center justify-center rounded-lg text-white" style={{ background: 'linear-gradient(135deg, #e11d48, #9f1239)', boxShadow: '0 0 20px rgba(225,29,72,0.5)' }}>
                         <Gamepad2 className="size-5" />
                     </span>
                     <span className="hidden font-display text-xl font-bold tracking-widest glow-text sm:inline" style={{ color: 'var(--text-primary)' }}>
                         ClingVerse
                     </span>
-                </a>
+                </Link>
 
                 <nav className="ml-2 hidden items-center gap-1 lg:flex">
-                    <a
+                    <Link
                         href="/"
-                        className="rounded-md px-3 py-2 text-sm font-medium transition-colors hover:text-primary"
-                        style={{ color: 'var(--primary)' }}
+                        className="rounded-md px-3 py-2 text-sm font-medium transition-colors hover:text-red-400"
+                        style={{ color: pathname === '/' ? 'var(--primary)' : 'var(--text-muted)' }}
                     >
                         Home
-                    </a>
+                    </Link>
 
                     <div className="relative" ref={browseRef}>
                         <button
@@ -142,14 +155,14 @@ export function Navbar({
                     </div>
 
                     {navLinks.slice(1).map((link) => (
-                        <a
-                            key={link}
-                            href="#"
+                        <Link
+                            key={link.href}
+                            href={link.href}
                             className="rounded-md px-3 py-2 text-sm font-medium transition-colors hover:text-red-400"
-                            style={{ color: 'var(--text-muted)' }}
+                            style={{ color: pathname === link.href ? 'var(--primary)' : 'var(--text-muted)' }}
                         >
-                            {link}
-                        </a>
+                            {link.label}
+                        </Link>
                     ))}
                 </nav>
 
